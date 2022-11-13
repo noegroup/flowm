@@ -1,10 +1,33 @@
 ## Installation
+We tested the following procedure for setting up a usable `conda` environment before installing the `flowm` package:
+```Bash
+conda create -n flow_matching
+conda activate flow_matching
 
+conda install -c conda-forge python=3.9 numpy scipy
+conda install -c pytorch -c conda-forge pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 
+conda install -c conda-forge pytorch-lightning=1.6.1
+conda install -c conda-forge matplotlib jupyter # recommended; necessary for making plots
+conda install -c conda-forge mdtraj deeptime # for handling the molecular data
+
+# installing bgflow
+pip install git+https://github.com/noegroup/bgflow.git@34df704bbde0c90ec3497dd757c4a4b4b9b69e95 # bgflow, branch flowmatching
+pip install einops nflows # dependecies for bgflow, part 1
+conda install -c conda-forge openmm # dependecies for bgflow, part 2
+
+# installing bgmol
+pip install git+https://github.com/noegroup/bgmol.git@2be2ede75ce137258fc83c01b28648a8c29161de # bgmol, branch main
+pip install networkx # dependency for bgmol
+```
 
 
 ## Application
 ### Example commands for reproducing the experiments
 #### Flow-CGnet for ala2
+
+- Acquiring the data set
+Run the `acquire_dataset.sh` in the `fetch_data` folder. Details are covered by the `README.md` file there.
+
 Note that a special flag `--no-shuffling-before-cv-split` is used whenever the program needs to access the `ala2_cg_data.npz`, since it comprises 4 independent trajectories of equal length, and this way we can ensure all frames from each trajectory are either all used for training or all for validation.
 
 - CGFlow training
