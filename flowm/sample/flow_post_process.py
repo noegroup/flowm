@@ -56,7 +56,7 @@ def filter_reweight_ca_chain_dataset(flow_dataset, repul_term, max_force_magintu
             all_repul_fs.append(fs.detach().cpu().numpy())
         all_repul_es = np.concatenate(all_repul_es)[:, 0]
         all_repul_fs = np.concatenate(all_repul_fs).reshape([-1, n_atoms * 3])
-        # output["forces"] += all_repul_fs[mask]
+        output["forces"] += all_repul_fs[mask]
         w_0 = np.exp(-all_repul_es) # require es unit: k_BT
         reweight_factor = mask.sum() / w_0[mask].sum()
         w = w_0 * reweight_factor
