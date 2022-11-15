@@ -13,6 +13,8 @@ def _avail_device():
 def get_cg_top(cg_top_or_pdb_path):
     if isinstance(cg_top_or_pdb_path, str):
         cg_top = md.load_topology(cg_top_or_pdb_path)
+    else:
+        cg_top = cg_top_or_pdb_path
     return cg_top
 
 def get_feat(cg_top):
