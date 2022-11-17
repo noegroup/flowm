@@ -1,3 +1,5 @@
+# Code base for paper Flow-matching -- efficient coarse-graining of molecular dynamics without forces
+
 ## Installation
 We tested the following procedure for setting up a usable `conda` environment before installing the `flowm` package:
 ```Bash
@@ -44,7 +46,6 @@ python -m flowm.train.flow --data-path "./fetch_data/downloaded/ala2_cg_data.npz
 --max_epochs 100 --lr 1e-3 --lr-decay 1.0 \
 --gpus 1 
 ```
-Note: `--reload_dataloaders_every_n_epochs 1` is important. We have to re-draw samples for the augmented channel to avoid the unintended coupling between the coordinate distribution and a fixed set of augmented noise. The effect will be more obvious when the training set is rather small.
 
 - Drawing samples from CGFlow checkpoint and post-processing 
 The raw and processed samples will be generated under the same folder where the checkpoint is located.
@@ -166,7 +167,7 @@ python -m flowm.train.flow --data-path "./fetch_data/downloaded/trpcage/trpcage_
 --max_epochs 25 --lr 1e-3 --lr-decay 1.0 \
 --gpus 1 
 ```
-Note: `--reload_dataloaders_every_n_epochs 1` is important. We have to re-draw samples for the augmented channel to avoid the unintended coupling between the coordinate distribution and a fixed set of augmented noise. The effect will be more obvious when the training set is rather small.
+Note: For back-compatibility with the paper results, here we disable the reloading of data loaders, i.e., the regeneration of augmented channel.
 
 - Drawing samples from CGFlow checkpoint and post-processing 
 The raw and processed samples will be generated under the same folder where the checkpoint is located.
@@ -200,18 +201,6 @@ python -m flowm.train.flow_cgnet --data-path "./fetch_data/downloaded/trpcage/tr
 ```
 In addition, the argument `--n-flow-samples-for-training [INT]` can be used for specifying the number of flow samples used in training. The default is to take 80% as training set and the rest as validation set for Flow-CGnet training.
 
-python -m flowm.train.flow_cgnet --data-path "./fetch_data/downloaded/trpcage/trpcage_ca.npz" \
---entry-order coords \
---name trpcage --pdb "./fetch_data/downloaded/trpcage/trpcage_ca.pdb" \
---flow-samples-path "./output/cgflow_trpcage_1670400_80-20" \
---batch-size 128 --val-batch-size 512 \
---prior-type NO_REPUL --activation silu \
---num-layers 8 --width 160 \
---lipschitz_strength 10.0 --temp 290.0 \
---max_epochs 75 --lr 3e-3 --target-lr 1e-5 \
---lr-decay-freq 15 \
---gpus 1
-
 - Sampling with trained Flow-CGnet model
     - Lagenvin dynamics simulation
     ```
@@ -233,17 +222,6 @@ python -m flowm.train.flow_cgnet --data-path "./fetch_data/downloaded/trpcage/tr
     --time-step-in-ps 2e-3 --save-interval 250 \
     --use-pt --temp-in-K 290 381 500 --pt-exchange-interval 1000
     ```
-python -m flowm.sample.simulate_cgnet --data-path "./fetch_data/downloaded/trpcage/trpcage_ca.npz" \
---entry-order coords \
---name trpcage --pdb "./fetch_data/downloaded/trpcage/trpcage_ca.pdb" \
---cgnet-chkpt-path "./output/flow_cgnet_trpcage_1670400_80-20_n_flow_samples_full/version_0/checkpoints" \
---n-time-steps 250000 --n-indepedent-sims 100 \
---time-step-in-ps 2e-3 --save-interval 250 \
---use-pt --temp-in-K 290 381 500 --pt-exchange-interval 1000
-
-
-python -m flowm.train.flow_cgnet --data-path "./fetch_data/downloaded/trpcage/trpcage_ca.npz" --entry-order coords --name trpcage_old --pdb "./fetch_data/downloaded/trpcage/trpcage_ca.pdb" --flow-samples-path "./fetch_data/downloaded/trpcage_old_flow_data.npz" --batch-size 128 --val-batch-size 512 --prior-type NO_REPUL --activation silu --num-layers 8 --width 160 --lipschitz_strength 10.0 --temp 290.0 --max_epochs 50 --lr 3e-3 --target-lr 1e-5 --lr-decay-freq 10 --gpus 1
-
 
 ### Side note: be careful about the unit of inputs and outputs.
 More information on this can be found in the file `fetch_data/README.md`.
@@ -253,13 +231,13 @@ More information on this can be found in the file `fetch_data/README.md`.
 
 #### Flow sample output:
 - coords: nm
-- forces: k_BT/nm
-- energy: k_BT
+- forces: k\_BT/nm
+- energy: k\_BT
 
 #### CGnet training input:
 - coords: nm
-- forces: k_BT/nm
-(When the input does not correspond to this list, then a unit conversion via --entry-scaling arguments is necessary)
+- forces: k\_BT/nm
+(When the input does not correspond to this list, then a unit conversion via `--entry-scaling` arguments is necessary)
 However, in order to keep the force matching error comparable with the 
 
 #### CGnet simulation output:
