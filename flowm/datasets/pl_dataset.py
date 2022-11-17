@@ -88,7 +88,7 @@ class FlowMatchingData(pl.LightningDataModule):
         self.cv_fold_describe = cv_fold
         if self.n_cv_splits == 1: # 80-20 split = 5 CV folds with the last fold as val set
             self.n_cv_splits = 5
-            self.cv_fold = 0
+            self.cv_fold = 4
             self.cv_fold_describe = "80-20"
         self.train_size = train_size
         self.shuffle_before_split = not no_shuffling_before_cv_split

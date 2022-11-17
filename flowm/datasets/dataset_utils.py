@@ -9,7 +9,8 @@ def get_shuffled_indices(indices, seed):
         indices = np.arange(indices)
     else:
         indices = np.array(indices, copy=True)
-    rng = np.random.default_rng(seed)
+    # np.random.default_rng(seed)
+    rng = np.random.RandomState(seed) # temporary, for back-compatibility
     rng.shuffle(indices)
     return indices
 
