@@ -172,10 +172,10 @@ Note: For back-compatibility with the paper results, here we disable the reloadi
 - Drawing samples from CGFlow checkpoint and post-processing 
 The raw and processed samples will be generated under the same folder where the checkpoint is located.
 ```
-python -m flowm.sample.flow --chkpt-path "./output/cgflow_trpcage_1670400_80-20" \
+python -m flowm.sample.flow --chkpt-path "./output/cgflow_trpcage_835200_80-20" \
 --name trpcage --n-samples 1048576
 
-python -m flowm.sample.flow_post_process --sample-file-path "./output/cgflow_trpcage_1670400_80-20" \
+python -m flowm.sample.flow_post_process --sample-file-path "./output/cgflow_trpcage_835200_80-20" \
 --name trpcage --pdb "./fetch_data/downloaded/trpcage/trpcage_ca.pdb" \
 --max-force-magnitude 8e4 \
 --reweight-repul GLY_SPECIAL_REPUL
@@ -190,7 +190,7 @@ Remember to change the line for `--flow-samples-path` to corresponding post-proc
 python -m flowm.train.flow_cgnet --data-path "./fetch_data/downloaded/trpcage/trpcage_ca.npz" \
 --entry-order coords \
 --name trpcage --pdb "./fetch_data/downloaded/trpcage/trpcage_ca.pdb" \
---flow-samples-path "./output/cgflow_trpcage_1670400_80-20" \
+--flow-samples-path "./output/cgflow_trpcage_835200_80-20" \
 --batch-size 128 --val-batch-size 512 \
 --prior-type GLY_SPECIAL_REPUL --activation silu \
 --num-layers 8 --width 160 \
@@ -207,7 +207,7 @@ In addition, the argument `--n-flow-samples-for-training [INT]` can be used for 
     python -m flowm.sample.simulate_cgnet --data-path "./fetch_data/downloaded/trpcage/trpcage_ca.npz" \
     --entry-order coords \
     --name trpcage --pdb "./fetch_data/downloaded/trpcage/trpcage_ca.pdb" \
-    --cgnet-chkpt-path "./output/flow_cgnet_trpcage_1670400_80-20_n_flow_samples_full/version_0/checkpoints" \
+    --cgnet-chkpt-path "./output/flow_cgnet_trpcage_835200_80-20_n_flow_samples_full/version_0/checkpoints" \
     --temp-in-K 290 --n-time-steps 250000 \
     --n-indepedent-sims 100 \
     --time-step-in-ps 2e-3 --save-interval 250
@@ -217,7 +217,7 @@ In addition, the argument `--n-flow-samples-for-training [INT]` can be used for 
     python -m flowm.sample.simulate_cgnet --data-path "./fetch_data/downloaded/trpcage/trpcage_ca.npz" \
     --entry-order coords \
     --name trpcage --pdb "./fetch_data/downloaded/trpcage/trpcage_ca.pdb" \
-    --cgnet-chkpt-path "./output/flow_cgnet_trpcage_1670400_80-20_n_flow_samples_full/version_0/checkpoints" \
+    --cgnet-chkpt-path "./output/flow_cgnet_trpcage_835200_80-20_n_flow_samples_full/version_0/checkpoints" \
     --n-time-steps 250000 --n-indepedent-sims 100 \
     --time-step-in-ps 2e-3 --save-interval 250 \
     --use-pt --temp-in-K 290 381 500 --pt-exchange-interval 1000

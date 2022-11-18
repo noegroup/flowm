@@ -18,7 +18,7 @@ This is a PDB file for all protein atoms. Afterwards, the full dataset can be ge
 The detailed names and paths in `example_transform_mae.tcl` and `example_coords_extract.py` need to be adapted. For the four fast folding proteins used in our experiments, here are the correponding names:
 - chignolin: CLN025-0-protein
 - trpcage: 2JOF-0-protein
-- bba: 1FME-0-protein, 1FME-0-protein (we concatenated the coordinates for flow training)
+- bba: 1FME-0-protein, 1FME-1-protein (we concatenated the coordinates for flow training)
 - villin: 2F4K-0-protein
 
 ### Info for adding new data set:
