@@ -38,7 +38,10 @@ def get_flow_marginals(ref_coords, weights=None):
 
         values, weights -- Numpy ndarrays with the same shape.
         """
-        average = np.average(values, axis=0, weights=weights, keepdims=True)
+        # average = np.average(values, axis=0, weights=weights, keepdims=True)
+        # the version above is not compatible with older versions of numpy
+        average = np.average(values, axis=0, weights=weights)
+        average = np.expand_dims(average, axis=0)
         # Fast and numerically precise:
         variance = np.average((values-average)**2, axis=0, weights=weights)
         return average[0], np.sqrt(variance)
